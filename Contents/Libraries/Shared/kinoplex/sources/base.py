@@ -22,7 +22,7 @@ class SourceBase(object):
     def search(self, results, media, lang, manual=False, primary=True):
         pass
 
-    def _fetch(self, obj_type, url, headers={'Accept-Encoding': 'gzip'}):
+    def _fetch(self, obj_type, url, headers={'Accept-Encoding': 'identity'}):
         data = None
         try:
             req = self.api.HTTP.Request(url, headers=headers)
@@ -32,12 +32,12 @@ class SourceBase(object):
             self.l.Error('Something goes wrong with request', exc_info=True)
         return data
 
-    def _fetch_json(self, url, headers={'Accept-Encoding': 'gzip'}):
+    def _fetch_json(self, url, headers={'Accept-Encoding': 'identity'}):
         json = self._fetch('JSON', url, headers)
         if isinstance(json, dict) and json.get('captcha', {}):
             self.l.Warn('Request returned captcha validation')
             return {}
         return json
 
-    def _fetch_xml(self, url, headers={'Accept-Encoding': 'gzip'}):
+    def _fetch_xml(self, url, headers={'Accept-Encoding': 'identity'}):
         return self._fetch('XML', url, headers)
